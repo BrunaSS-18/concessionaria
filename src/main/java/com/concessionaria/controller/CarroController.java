@@ -1,43 +1,42 @@
 package com.concessionaria.controller;
 
-import com.concessionaria.model.Carro;
-import com.concessionaria.repository.CarroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.concessionaria.dto.CarroDTO;
+import com.concessionaria.dto.CarroResponseDTO;
+import com.concessionaria.service.CarroService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/carros")
+@RequestMapping("/concessionaria/carro")
+@RequiredArgsConstructor
 public class CarroController {
-    @Autowired
-    private CarroRepository carroRepository;
+
+    private final CarroService carroService;
 
     @PostMapping
-    public ResponseEntity<Carro> cadastrar(@RequestBody Carro carro) {
-        Carro salvo = carroRepository.save(carro);
-        return ResponseEntity.status(201).body(salvo);
+    public ResponseEntity<CarroResponseDTO> cadastrar(@Valid @RequestBody CarroDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(carroService.cadastrar(dto));
     }
 
     @GetMapping
-    public ResponseEntity<List<Carro>> listar() {
-        return ResponseEntity.ok(carroRepository.findAll());
+    public ResponseEntity<List<CarroResponseDTO>> listar() {
+
+        return ResponseEntity.ok(carroService.listar());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Carro> buscarPorId(@PathVariable Long id) {
-        return carroRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<CarroResponseDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(carroService.buscarPorId(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        if (!carroRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        carroRepository.deleteById(id);
+        carroService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }

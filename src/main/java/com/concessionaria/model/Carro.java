@@ -1,16 +1,19 @@
 package com.concessionaria.model;
 
-import ch.qos.logback.core.status.Status;
+import com.concessionaria.enums.StatusVenda;
+import com.concessionaria.enums.TipoEstado;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "carro")
 @Data
+@Table(name = "carro")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Carro {
@@ -47,7 +50,11 @@ public class Carro {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status;
+    private StatusVenda statusVenda;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoEstado tipoEstado;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = true)

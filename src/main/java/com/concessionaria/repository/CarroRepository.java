@@ -8,9 +8,6 @@ import java.util.Optional;
 
 public interface CarroRepository extends JpaRepository<Carro, Long> {
 
-    Optional<Carro> findByChassi(String chassi);
-
-    Optional<Carro> findByPlaca(String placa);
-
-    List<Carro> findByCliente_Id(Long clienteId);
+    boolean existsByChassi(String chassi);
+    boolean existsByPlaca(String placa);
 }

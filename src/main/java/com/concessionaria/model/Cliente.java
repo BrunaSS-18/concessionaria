@@ -2,12 +2,14 @@ package com.concessionaria.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "cliente")
 @Data
+@Table(name = "cliente")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cliente {
