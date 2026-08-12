@@ -49,6 +49,25 @@ public class CarroService {
                 .toList();
     }
 
+    public List<CarroResponseDTO> buscarComFiltro (String cor, Integer anoFabricacao) {
+
+        List<Carro> carros;
+
+        if (cor == null && anoFabricacao == null) {
+            carros = carroRepository.findAll();
+        } else if (cor != null && anoFabricacao == null) {
+            carros = carroRepository.findByCorIgnoreCase(cor);
+        } else if (cor == null && anoFabricacao != null) {
+            carros = carroRepository.findByAnoFabricacao(anoFabricacao);
+        } else {
+            carros = carroRepository.findByCorIgnoreCaseAndAnoFabricacao(cor, anoFabricacao);
+        }
+
+        return carros.stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+
     public CarroResponseDTO buscarPorId(Long id) {
         return toResponseDTO(buscarEntidadePorId(id));
     }
